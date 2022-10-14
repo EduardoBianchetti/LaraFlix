@@ -8,8 +8,17 @@ use App\Http\Requests\NacionalidadeRequest;
 
 class NacionalidadesController extends Controller
 {
-    public function index() {
-        $nacionalidades = Nacionalidade::orderBy('descricao')->paginate(5);
+
+    public function index(Request $filtro) {
+        $filtragem = $filtro->get('desc_filtro');
+        if ($filtragem == null)
+            $nacionalidades = Nacionalidade::orderBy('descricao')->paginate(5);
+        else
+            $nacionalidades = Nacionalidade::where('descricao', 'like', '%'.$filtragem.'%')
+                                ->orderBy("descricao")
+                                ->paginate(10)
+                                ->setpath('nacionalidades?desc_filtro='.$filtragem);
+                                
         return view('nacionalidades.index', ['nacionalidades' => $nacionalidades]);
     }
 
@@ -24,12 +33,20 @@ class NacionalidadesController extends Controller
     }
 
     public function destroy($id) {
-        Nacionalidade::find($id)->delete();
-        return redirect()->route('nacionalidades');
+        try {
+            Nacionalidade::find($id)->delete();
+            $ret = array('status'=>200, 'msg'=>"null");
+        } catch (\Illuminate\Database\QueryException $e) {
+            $ret = array('status'=>500, 'msg'=>$e->getMessage());
+        }
+        catch (\PDOException $e) {
+            $ret = array('status'=>500, 'msg'=>$e->getMessage());
+        }
+        return $ret;
     }
 
-    public function edit($id) {
-        $nacionalidade = Nacionalidade::find($id);
+    public function edit(Request $request) {
+        $nacionalidade = Nacionalidade::find(\Crypt::decrypt($request->get('id')));
         return view('nacionalidades.edit', compact('nacionalidade'));
     }
 

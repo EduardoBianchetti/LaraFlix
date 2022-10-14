@@ -25,7 +25,7 @@ class AtorRequest extends FormRequest
     {
         return [
             'nome' => 'required|min:5',
-            'nacionalidade' => 'required',
+            'nacionalidade_id' => 'required',
             'dt_nascimento' => 'date',
             'inicio_atividades' => 'date',
         ];

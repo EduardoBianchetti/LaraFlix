@@ -17,13 +17,10 @@
             {!! Form::text('nome', null, ['class'=>'form-control', 'required']) !!}
         </div>
         <div class="form-group">
-            {!! Form::label('nacionalidade', 'Nacionalidade:') !!}
-            {!! Form::select('nacionalidade', 
-                array( 'BRA'=>'Brasileiro',
-                       'USA'=>'Americano',
-                       'CAN'=>'Canadense',
-                       'ARG'=>'Argentino'),
-                       'BRA', ['class'=>'form-control', 'required']) !!}
+            {!! Form::label('nacionalidade_id', 'Nacionalidade:') !!}
+            {!! Form::select('nacionalidade_id', 
+                \App\Nacionalidade::orderBy('descricao')->pluck('descricao', 'id')->toArray(),
+                null, ['class'=>'form-control', 'required']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('dt_nascimento', 'Data de Nascimento:') !!}
