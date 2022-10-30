@@ -32,9 +32,9 @@ class NacionalidadesController extends Controller
         return redirect()->route('nacionalidades');
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request) {
         try {
-            Nacionalidade::find($id)->delete();
+            Nacionalidade::find(\Crypt::decrypt($request->get('id')))->delete();
             $ret = array('status'=>200, 'msg'=>"null");
         } catch (\Illuminate\Database\QueryException $e) {
             $ret = array('status'=>500, 'msg'=>$e->getMessage());

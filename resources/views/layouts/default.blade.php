@@ -12,7 +12,7 @@
                 cancelButtonText: 'Cancelar!', closeOnConfirm: false,
             }).then(function(isConfirm) {
                 if (isConfirm.value) {
-                    $.get('/'+ @yield('table-delete') +'/'+id+'/destroy', function(data) {
+                    $.get('/'+ @yield('table-delete') +'/destroy?id='+id, function(data) {
                         if(data.status == 200) {
                             swal.fire(
                                 'Deletado!',

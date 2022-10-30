@@ -8,6 +8,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use \App\Ator;
 use \App\Nacionalidade;
+use \App\Filme;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,13 @@ class AppServiceProvider extends ServiceProvider
                 'url'         => 'nacionalidades',
                 'icon'        => 'fas fa-fw fa-flag',
                 'label'       => Nacionalidade::count(),
+                'label_color' => 'success',
+            ]);
+            $event->menu->add([
+                'text'        => 'Listagem',
+                'url'         => 'filmes',
+                'icon'        => 'fas fa-fw fa-film',
+                'label'       => Filme::count(),
                 'label_color' => 'success',
             ]);
         });

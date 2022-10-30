@@ -10,14 +10,15 @@ class AtoresController extends Controller
 {
     public function index(Request $filtro) {
         $filtragem = $filtro->get('desc_filtro');
-        if ($filtragem == null)
-            $atores = Ator::orderBy('nome')->paginate(10);
-        else
+        if($filtragem == null) {
+            $atores = \DB::table('atores')->join('nacionalidades', 'atores.nacionalidade_id', '=', 'nacionalidades.id')->select('atores.*', 'nacionalidades.descricao')->orderBy('atores.nome')->paginate(5);
+        }
+        else {
             $atores = Ator::where('nome', 'like', '%'.$filtragem.'%')
-                                ->orderBy("nome")
-                                ->paginate(10)
-                                ->setpath('atores?desc_filtro='.$filtragem);
-                                
+            ->orderBy('nome')
+            ->paginate(5)
+            ->setpath('atores?desc_filtro=' . $filtragem);
+        }
         return view('atores.index', ['atores' => $atores]);
     }
     
@@ -31,9 +32,9 @@ class AtoresController extends Controller
         return redirect()->route('atores');
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request) {
         try {
-            Ator::find($id)->delete();
+            Ator::find(\Crypt::decrypt($request->get('id')))->delete();
             $ret = array('status'=>200, 'msg'=>"null");
         } catch (\Illuminate\Database\QueryException $e) {
             $ret = array('status'=>500, 'msg'=>$e->getMessage());

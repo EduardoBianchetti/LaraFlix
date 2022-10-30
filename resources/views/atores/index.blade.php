@@ -27,12 +27,12 @@
             @foreach($atores as $ator)
                 <tr>
                     <td>{{ $ator->nome }}</td>
-                    <td>{{ $ator->nacionalidade->descricao }}</td>
+                    <td>{{ $ator->descricao }}</td>
                     <td>{{ \Carbon\Carbon::parse($ator->dt_nascimento)->format('d/m/Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($ator->inicio_atividades)->format('d/m/Y') }}</td>
                     <td>
                         <a href="{{ route('atores.edit', ['id'=>\Crypt::encrypt($ator->id)]) }}" class="btn-sm btn-success">Editar</a>
-                        <a href="#" onclick="return ConfirmaExclusao({{$ator->id}})" class="btn-sm btn-danger">Remover</a>
+                        <a href="#" onclick="return ConfirmaExclusao('{{\Crypt::encrypt($ator->id)}}')" class="btn-sm btn-danger">Remover</a>
                     </td>
                 </tr>
             @endforeach
